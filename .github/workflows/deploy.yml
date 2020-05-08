@@ -29,3 +29,18 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
         dockerfile: deploy/prod/Dockerfile
         tags: latest
+    - name: Deploy package to digitalocean
+      uses: appleboy/ssh-action@master
+      env:
+          GITHUB_USERNAME: ${{ secrets.GITHUBUSERNAME }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        port: ${{ secrets.PORT }}
+        envs: GITHUBUSERNAME, GITHUB_TOKEN
+        script: |
+          docker stop $(docker ps -a -q)
+          docker login docker.pkg.github.com -u $GITHUBUSERNAME -p $GITHUB_TOKEN
+          docker run -dit -p 80:80 docker.pkg.github.com/rafaell416/github-actions-deploy/github-actions-deploy-docker-image:latest
