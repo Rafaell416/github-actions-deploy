@@ -25,7 +25,7 @@ jobs:
       with:
         name: rafaell416/github-actions-deploy/github-actions-deploy-docker-image
         registry: docker.pkg.github.com
-        username: ${{ secrets.USERNAME }}
+        username: ${{ secrets.GITHUBUSERNAME }}
         password: ${{ secrets.GITHUB_TOKEN }}
         dockerfile: deploy/prod/Dockerfile
         tags: latest
